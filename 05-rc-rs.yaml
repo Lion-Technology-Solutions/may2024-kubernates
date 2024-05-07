@@ -1,0 +1,35 @@
+apiVersion: v1 
+kind:  ReplicationController 
+metadata:
+  labels:
+    name: demo
+  name: demo-controller
+spec:
+  replicas: 2  # replica set gurantees high availability
+  template:
+    metadata:
+      labels:
+        name: demo 
+    spec:  
+      containers:
+      - image: liontechacademy/april23repo:nexus-v1
+        name:  demo-controller 
+        ports:
+        - name: demo  
+          containerPort: 8081
+---
+
+apiVersion: v1 
+kind: Service
+metadata:
+  labels:
+    name: demo 
+  name: demo 
+spec: 
+  type: NodePort 
+  ports:
+    - port: 8081
+      targetPort: 8081
+  selector:
+    name: demo 
+
